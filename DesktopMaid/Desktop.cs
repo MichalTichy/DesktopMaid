@@ -28,24 +28,21 @@ namespace DesktopMaid
             //common desktop
             files.AddRange(Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory)));
             files.AddRange(Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory)));
+
+            files.RemoveAll(s => s.Contains("desktop.ini"));
         }
 
-        public void AddFiles(IEnumerable<string> files)
+        public void AddFiles(IEnumerable<string> filesToAdd)
         {
-            this.files.AddRange(files.Where(path => !this.files.Contains(path)));
+            files.AddRange(filesToAdd.Where(path => !this.files.Contains(path)));
         }
 
-        public void RemoveFiles(IEnumerable<string> files)
+        public void RemoveFiles(IEnumerable<string> filesToRemove)
         {
-            foreach (string path in files.Where(path => this.files.Contains(path)))
+            foreach (string path in filesToRemove.Where(path => this.files.Contains(path)))
             {
-                this.files.Remove(path);
+                files.Remove(path);
             }
-        }
-
-        public static IEnumerable<string> GetCommonItems(Desktop desktopA , Desktop desktopB)
-        {
-            return desktopA.Files.Intersect(desktopB.Files);
         }
     }
 }

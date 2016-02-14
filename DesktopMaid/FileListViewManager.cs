@@ -79,7 +79,7 @@ namespace DesktopMaid
             var lwItem = new ListViewItem
             {
                 Tag = path,
-                Text = Path.GetDirectoryName(path),
+                Text = new DirectoryInfo(path).Name,
                 ForeColor = color
             };
             return lwItem;
