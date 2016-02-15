@@ -295,7 +295,7 @@
             this.MaximizeBox = false;
             this.Name = "DesktopMaid";
             this.Text = "Desktop Maid";
-            this.Load += new System.EventHandler(this.DesktopMaid_Load);
+            this.Shown += new System.EventHandler(this.DesktopMaid_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabRestore.ResumeLayout(false);
             this.tabRestore.PerformLayout();
