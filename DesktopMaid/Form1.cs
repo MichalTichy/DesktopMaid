@@ -14,8 +14,10 @@ namespace DesktopMaid
 {
     public partial class DesktopMaid : Form
     {
-        private Desktop currentDesktop = new Desktop();
+        private Desktop currentDesktop;
         private Desktop savedDesktop;
+        private Settings settings;
+
         public DesktopMaid()
         {
             InitializeComponent();
@@ -31,6 +33,7 @@ namespace DesktopMaid
 
         private void UpdateLbItems()
         {
+            currentDesktop=new Desktop();
             lbItems.BeginUpdate();
             lbItems.Clear();
             lbItems.SmallImageList = FileListViewManager.GetIcons(currentDesktop.Files.Where(File.Exists));
@@ -58,6 +61,8 @@ namespace DesktopMaid
         private void DesktopMaid_Shown(object sender, EventArgs e)
         {
             savedDesktop = Desktop.Load();
+            settings=Settings.Load();
+
             if (savedDesktop == null)
             {
                 savedDesktop = new Desktop(new string[] { });
@@ -65,7 +70,25 @@ namespace DesktopMaid
                 tabControl1.SelectedIndex = 0;
                 BlinkControl(butPreserve);
             }
+            if (settings!=null)
+            {
+                LoadDataFromSettings();
+            }
+            if (string.IsNullOrWhiteSpace(tbPath.Text))
+            {
+                MessageBox.Show("You also have to select path to copy files to."); //todo rewrite
+                tabControl1.SelectedIndex = 1;
+                BlinkControl(butBrowse);
+            }
             UpdateLbItems();
+        }
+
+        private void LoadDataFromSettings()
+        {
+            tbPath.Text = settings.Path;
+            cbRunAtStartup.Checked = settings.RunAtStartup;
+            chbAutoRestore.Checked = settings.AutoRestore;
+            numInterval.Value = settings.Interval;
         }
     }
 }
