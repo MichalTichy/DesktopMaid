@@ -37,7 +37,7 @@ namespace DesktopMaid
             lbItems.BeginUpdate();
             lbItems.Clear();
             lbItems.SmallImageList = FileListViewManager.GetIcons(currentDesktop.Files.Where(File.Exists));
-            FileListViewManager.FillListView(lbItems,currentDesktop,savedDesktop);
+            lbItems.FillWithDeskopItems(currentDesktop,savedDesktop);
             lbItems.EndUpdate();
         }
 
@@ -74,6 +74,10 @@ namespace DesktopMaid
             {
                 LoadDataFromSettings();
             }
+            else
+            {
+                settings=new Settings();
+            }
             if (string.IsNullOrWhiteSpace(tbPath.Text))
             {
                 MessageBox.Show("You also have to select path to copy files to."); //todo rewrite
@@ -89,6 +93,31 @@ namespace DesktopMaid
             cbRunAtStartup.Checked = settings.RunAtStartup;
             chbAutoRestore.Checked = settings.AutoRestore;
             numInterval.Value = settings.Interval;
+        }
+
+        private void butBrowse_Click(object sender, EventArgs e)
+        {
+            var fbd=new FolderBrowserDialog();
+            if (fbd.ShowDialog()==DialogResult.OK)
+            {
+                settings.Path = fbd.SelectedPath;
+                tbPath.Text = settings.Path;
+            }
+        }
+
+        private void cbRunAtStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            settings.RunAtStartup = cbRunAtStartup.Checked;
+        }
+
+        private void chbAutoRestore_CheckedChanged(object sender, EventArgs e)
+        {
+            settings.AutoRestore = chbAutoRestore.Checked;
+        }
+
+        private void numInterval_ValueChanged(object sender, EventArgs e)
+        {
+            settings.Interval = numInterval.Value;
         }
     }
 }

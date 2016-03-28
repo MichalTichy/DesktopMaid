@@ -8,43 +8,45 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace DesktopMaid
 {
     public class Desktop
     {
-        private List<string> files;
-        public ReadOnlyCollection<string> Files => files.AsReadOnly();
+        public List<string> Files;
         public Desktop(IEnumerable<string> files)
         {
-            this.files = new List<string>(files);
+            Files = new List<string>(files);
         }
 
         public Desktop()
         {
-            files=new List<string>();
+            Files=new List<string>();
             //desktop
-            files.AddRange(Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)));
-            files.AddRange(Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)));
+            Files.AddRange(Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)));
+            Files.AddRange(Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)));
 
             //common desktop
-            files.AddRange(Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory)));
-            files.AddRange(Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory)));
+            Files.AddRange(Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory)));
+            Files.AddRange(Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory)));
 
-            files.RemoveAll(s => s.Contains("desktop.ini"));
+            Files.RemoveAll(s => s.Contains("desktop.ini"));
         }
 
         public void AddFiles(IEnumerable<string> filesToAdd)
         {
-            files.AddRange(filesToAdd.Where(path => !this.files.Contains(path)));
+            Files.AddRange(filesToAdd.Where(path => !this.Files.Contains(path)));
+            Save();
         }
 
         public void RemoveFiles(IEnumerable<string> filesToRemove)
         {
-            foreach (var path in filesToRemove.Where(path => this.files.Contains(path)))
+            foreach (var path in filesToRemove.Where(path => this.Files.Contains(path)))
             {
-                files.Remove(path);
+                Files.Remove(path);
             }
+            Save();
         }
 
         public void Save()
@@ -56,7 +58,7 @@ namespace DesktopMaid
             var sr=new StreamReader(stream);
             try
             {
-                File.WriteAllText(Environment.SpecialFolder.ApplicationData + "/DesktopMaid/save.json", sr.ReadToEnd());
+                File.WriteAllText(Path.GetDirectoryName(Settings.SettingsPath)+@"\save.json", sr.ReadToEnd());
             }
             catch (Exception)
             {
@@ -72,7 +74,7 @@ namespace DesktopMaid
 
             try
             {
-                var path = Environment.SpecialFolder.ApplicationData + "/DesktopMaid/save.json";
+                var path = Path.GetDirectoryName(Settings.SettingsPath)+@"\save.json";
                 if (!File.Exists(path))
                 {
                     return null;

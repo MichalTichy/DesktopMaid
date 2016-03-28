@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Windows.Forms;
@@ -12,6 +13,7 @@ namespace DesktopMaid
         private string _path;
 
         private bool _runAtStartup;
+        public static readonly string SettingsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/DesktopMaid/settings.json";
 
         public string Path
         {
@@ -55,6 +57,11 @@ namespace DesktopMaid
             }
         }
 
+        public Settings()
+        {
+            Save();
+        }
+
         public void Save()
         {
             var stream = new MemoryStream();
@@ -64,12 +71,21 @@ namespace DesktopMaid
             var sr = new StreamReader(stream);
             try
             {
-                File.WriteAllText(Environment.SpecialFolder.ApplicationData + "/DesktopMaid/settings.json",
-                    sr.ReadToEnd());
+                CreateDirectoryIfNonexistent();
+                File.WriteAllText(SettingsPath, sr.ReadToEnd());
             }
             catch (Exception)
             {
                 MessageBox.Show("Saving failed!");
+            }
+        }
+
+        private static void CreateDirectoryIfNonexistent()
+        {
+            var dir = System.IO.Path.GetDirectoryName(SettingsPath);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
             }
         }
 
@@ -81,7 +97,7 @@ namespace DesktopMaid
 
             try
             {
-                var path = Environment.SpecialFolder.ApplicationData + "/DesktopMaid/settings.json";
+                var path = SettingsPath;
                 if (!File.Exists(path))
                 {
                     return null;

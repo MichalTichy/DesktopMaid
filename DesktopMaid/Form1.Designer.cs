@@ -247,6 +247,7 @@
             this.numInterval.Name = "numInterval";
             this.numInterval.Size = new System.Drawing.Size(120, 20);
             this.numInterval.TabIndex = 4;
+            this.numInterval.ValueChanged += new System.EventHandler(this.numInterval_ValueChanged);
             // 
             // chbAutoRestore
             // 
@@ -257,6 +258,7 @@
             this.chbAutoRestore.TabIndex = 3;
             this.chbAutoRestore.Text = "restore desktop automaticaly";
             this.chbAutoRestore.UseVisualStyleBackColor = true;
+            this.chbAutoRestore.CheckedChanged += new System.EventHandler(this.chbAutoRestore_CheckedChanged);
             // 
             // cbRunAtStartup
             // 
@@ -267,6 +269,7 @@
             this.cbRunAtStartup.TabIndex = 2;
             this.cbRunAtStartup.Text = "run at startup";
             this.cbRunAtStartup.UseVisualStyleBackColor = true;
+            this.cbRunAtStartup.CheckedChanged += new System.EventHandler(this.cbRunAtStartup_CheckedChanged);
             // 
             // butBrowse
             // 
@@ -276,6 +279,7 @@
             this.butBrowse.TabIndex = 1;
             this.butBrowse.Text = "...";
             this.butBrowse.UseVisualStyleBackColor = true;
+            this.butBrowse.Click += new System.EventHandler(this.butBrowse_Click);
             // 
             // tbPath
             // 
