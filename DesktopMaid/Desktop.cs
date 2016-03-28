@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Json;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +13,7 @@ using System.Windows.Forms.VisualStyles;
 
 namespace DesktopMaid
 {
-    public class Desktop
+    public partial class Desktop
     {
         public List<string> Files;
         public Desktop(IEnumerable<string> files)
@@ -90,7 +91,12 @@ namespace DesktopMaid
                 MessageBox.Show("Could not load saved desktop!");
                 return null;
             }
-
         }
+    }
+
+    public class FileMoveResult : EventArgs
+    {
+        string path;
+        Exception exception;
     }
 }

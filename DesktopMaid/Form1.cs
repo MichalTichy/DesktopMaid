@@ -21,6 +21,7 @@ namespace DesktopMaid
         public DesktopMaid()
         {
             InitializeComponent();
+            Desktop.ResultReady += ResultReady;
         }
 
         private void BlinkControl(Control control)
@@ -103,6 +104,11 @@ namespace DesktopMaid
                 settings.Path = fbd.SelectedPath;
                 tbPath.Text = settings.Path;
             }
+        }
+
+        private void ResultReady(object sender, FileMoveResult result)
+        {
+            throw new NotImplementedException();
         }
 
         private void cbRunAtStartup_CheckedChanged(object sender, EventArgs e)
