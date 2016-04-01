@@ -108,7 +108,25 @@ namespace DesktopMaid
 
         private void ResultReady(object sender, FileMoveResult result)
         {
-            throw new NotImplementedException();
+            var status = result.exception == null ? "OK" : "Error";
+            var line = new ListViewItem
+            {
+                BackColor = result.exception == null ? Color.Green : Color.Red,
+                Text = $"{Path.GetFileName(result.path)}: {status}",
+                ToolTipText = result.exception == null ? result.path : TryToGetUserFriendlyExceptionDescription(result.exception)
+            };
+            lVLog.Items.Add(line);
+        }
+
+        private string TryToGetUserFriendlyExceptionDescription(Exception exception)
+        {
+            if (exception is UnauthorizedAccessException)
+                return "You dont have the required permission to create or delete this file!";
+
+            if (exception is FileNotFoundException)
+                return "Source file was not found!";
+
+            return exception.Message;
         }
 
         private void cbRunAtStartup_CheckedChanged(object sender, EventArgs e)
@@ -124,6 +142,11 @@ namespace DesktopMaid
         private void numInterval_ValueChanged(object sender, EventArgs e)
         {
             settings.Interval = numInterval.Value;
+        }
+
+        private void butClean_Click(object sender, EventArgs e)
+        {
+            savedDesktop.Restore(settings.Path);
         }
     }
 }

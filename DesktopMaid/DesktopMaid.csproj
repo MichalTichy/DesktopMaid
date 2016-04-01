@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Desktop.cs" />
+    <Compile Include="DesktopRestore.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -30,11 +30,11 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabRestore = new System.Windows.Forms.TabPage();
+            this.labelInfo = new System.Windows.Forms.Label();
             this.lbItems = new System.Windows.Forms.ListView();
             this.linkRefresh = new System.Windows.Forms.LinkLabel();
             this.label5 = new System.Windows.Forms.Label();
             this.Log = new System.Windows.Forms.Label();
-            this.lbLog = new System.Windows.Forms.ListBox();
             this.butCancel = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.butRemove = new System.Windows.Forms.Button();
@@ -50,6 +50,7 @@
             this.cbRunAtStartup = new System.Windows.Forms.CheckBox();
             this.butBrowse = new System.Windows.Forms.Button();
             this.tbPath = new System.Windows.Forms.TextBox();
+            this.lVLog = new System.Windows.Forms.ListView();
             this.tabControl1.SuspendLayout();
             this.tabRestore.SuspendLayout();
             this.tabSettings.SuspendLayout();
@@ -68,11 +69,12 @@
             // 
             // tabRestore
             // 
+            this.tabRestore.Controls.Add(this.lVLog);
+            this.tabRestore.Controls.Add(this.labelInfo);
             this.tabRestore.Controls.Add(this.lbItems);
             this.tabRestore.Controls.Add(this.linkRefresh);
             this.tabRestore.Controls.Add(this.label5);
             this.tabRestore.Controls.Add(this.Log);
-            this.tabRestore.Controls.Add(this.lbLog);
             this.tabRestore.Controls.Add(this.butCancel);
             this.tabRestore.Controls.Add(this.progressBar1);
             this.tabRestore.Controls.Add(this.butRemove);
@@ -87,6 +89,14 @@
             this.tabRestore.TabIndex = 0;
             this.tabRestore.Text = "Restore desktop layout";
             this.tabRestore.UseVisualStyleBackColor = true;
+            // 
+            // labelInfo
+            // 
+            this.labelInfo.AutoSize = true;
+            this.labelInfo.Location = new System.Drawing.Point(260, 260);
+            this.labelInfo.Name = "labelInfo";
+            this.labelInfo.Size = new System.Drawing.Size(0, 13);
+            this.labelInfo.TabIndex = 13;
             // 
             // lbItems
             // 
@@ -126,14 +136,6 @@
             this.Log.Size = new System.Drawing.Size(25, 13);
             this.Log.TabIndex = 9;
             this.Log.Text = "Log";
-            // 
-            // lbLog
-            // 
-            this.lbLog.FormattingEnabled = true;
-            this.lbLog.Location = new System.Drawing.Point(261, 149);
-            this.lbLog.Name = "lbLog";
-            this.lbLog.Size = new System.Drawing.Size(253, 121);
-            this.lbLog.TabIndex = 8;
             // 
             // butCancel
             // 
@@ -180,6 +182,7 @@
             this.butClean.TabIndex = 3;
             this.butClean.Text = "Clean desktop";
             this.butClean.UseVisualStyleBackColor = true;
+            this.butClean.Click += new System.EventHandler(this.butClean_Click);
             // 
             // label2
             // 
@@ -289,6 +292,15 @@
             this.tbPath.Size = new System.Drawing.Size(448, 20);
             this.tbPath.TabIndex = 0;
             // 
+            // lVLog
+            // 
+            this.lVLog.Location = new System.Drawing.Point(263, 151);
+            this.lVLog.Name = "lVLog";
+            this.lVLog.Size = new System.Drawing.Size(251, 119);
+            this.lVLog.TabIndex = 14;
+            this.lVLog.UseCompatibleStateImageBehavior = false;
+            this.lVLog.View = System.Windows.Forms.View.List;
+            // 
             // DesktopMaid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -316,7 +328,6 @@
         private System.Windows.Forms.TabPage tabRestore;
         private System.Windows.Forms.TabPage tabSettings;
         private System.Windows.Forms.Label Log;
-        private System.Windows.Forms.ListBox lbLog;
         private System.Windows.Forms.Button butCancel;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button butRemove;
@@ -334,6 +345,8 @@
         private System.Windows.Forms.CheckBox cbRunAtStartup;
         private System.Windows.Forms.Button butBrowse;
         private System.Windows.Forms.ListView lbItems;
+        private System.Windows.Forms.Label labelInfo;
+        private System.Windows.Forms.ListView lVLog;
     }
 }
 

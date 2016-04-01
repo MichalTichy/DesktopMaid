@@ -93,10 +93,4 @@ namespace DesktopMaid
             }
         }
     }
-
-    public class FileMoveResult : EventArgs
-    {
-        string path;
-        Exception exception;
-    }
 }
