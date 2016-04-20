@@ -116,6 +116,7 @@ namespace DesktopMaid
                 ToolTipText = result.exception == null ? result.path : TryToGetUserFriendlyExceptionDescription(result.exception)
             };
             lVLog.Items.Add(line);
+            progressBar1.Value += result.fileSizeInPercents;
         }
 
         private string TryToGetUserFriendlyExceptionDescription(Exception exception)
@@ -137,6 +138,7 @@ namespace DesktopMaid
         private void chbAutoRestore_CheckedChanged(object sender, EventArgs e)
         {
             settings.AutoRestore = chbAutoRestore.Checked;
+            progressBar1.Value++;
         }
 
         private void numInterval_ValueChanged(object sender, EventArgs e)
@@ -146,7 +148,21 @@ namespace DesktopMaid
 
         private void butClean_Click(object sender, EventArgs e)
         {
-            savedDesktop.Restore(settings.Path);
+            RestoreDesktop();
+        }
+
+        private void RestoreDesktop()
+        {
+            progressBar1.Value = 0;
+            try
+            {
+                savedDesktop.Restore(settings.Path);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show($"Access denied!/n/n{ex.Message}");
+            }
+            UpdateLbItems();
         }
     }
 }

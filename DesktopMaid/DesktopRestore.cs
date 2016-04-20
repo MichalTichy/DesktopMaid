@@ -13,20 +13,54 @@ namespace DesktopMaid
         {
             var currentDesktop = new Desktop();
             var filesToMove = currentDesktop.Files.Except(Files);
-
+            var sizesOfItemsInPercents = GetSizesOfItemsInPercents(filesToMove);
             var destinationFolder = $"{destination}/{DateTime.Now.Date.ToShortDateString().Replace('/', '.')}";
+            CreateFolderIfNonExistent(destinationFolder);
 
-            var Tasks =
-                filesToMove.Select(item => new Task<FileMoveResult>(() => MoveItem(item, destinationFolder))).ToList();
-            Tasks.ForEach(t => t.Start());
+            var tasks =
+                filesToMove.Select(item => new Task<FileMoveResult>(() => new ItemMover(item, destinationFolder).Start())).ToList();
+            tasks.ForEach(t => t.Start());
 
-            while (Tasks.Count > 0)
+            while (tasks.Count > 0)
             {
-                var firstFinishedTask = await Task.WhenAny(Tasks);
-                Tasks.Remove(firstFinishedTask);
+                var firstFinishedTask = await Task.WhenAny(tasks);
+                tasks.Remove(firstFinishedTask);
                 var result = await firstFinishedTask;
+                result.fileSizeInPercents = sizesOfItemsInPercents[result.path];
                 OnResultReady(result);
             }
+        }
+
+        private Dictionary<string, int> GetSizesOfItemsInPercents(IEnumerable<string> filesToMove)
+        {
+            var sizes = GetSizesOfItems(filesToMove);
+            var sizesInPercents = new Dictionary<string, int>();
+            var totalSize = sizes.Values.Sum();
+            foreach (var fileSize in sizes)
+            {
+                var size= (100 * fileSize.Value) / totalSize;
+                sizesInPercents.Add(fileSize.Key,(int)size);
+            }
+            return sizesInPercents;
+        }
+
+        private Dictionary<string,long> GetSizesOfItems(IEnumerable<string> filesToMove)
+        {
+            var sizes=new Dictionary<string,long>(filesToMove.Count());
+            foreach (var path in filesToMove)
+            {
+                if (File.Exists(path))
+                {
+                    sizes.Add(path, new FileInfo(path).Length);
+                }
+                else if (Directory.Exists(path))
+                {
+                    Scripting.FileSystemObject fso = new Scripting.FileSystemObject();
+                    Scripting.Folder folder = fso.GetFolder(path);
+                    sizes.Add(path, folder.Size);
+                }
+            }
+            return sizes;
         }
 
 
@@ -37,61 +71,11 @@ namespace DesktopMaid
             ResultReady?.Invoke(typeof(Desktop), result);
         }
 
-        private FileMoveResult MoveItem(string path, string destinationFolder)
+        private void CreateFolderIfNonExistent(string dir)
         {
-            var result = new FileMoveResult { path = path };
-            try
+            if (!Directory.Exists(dir))
             {
-                var target = GetTargetPath(path, destinationFolder);
-                CreateFolderIfNonExistent(target);
-                if (Directory.Exists(path))
-                {
-                    throw new NotImplementedException();
-                }
-                else if (File.Exists(path))
-                {
-                    File.Copy(path, target.FullName);
-                    File.Delete(path);
-                }
-                else
-                {
-                    throw new FileNotFoundException("Source file was not found.",path);
-                }
-            }
-            catch (Exception ex)
-            {
-                result.exception = ex;
-            }
-            return result;
-        }
-
-        private FileInfo GetTargetPath(string path, string destinationFolder)
-        {
-            string fileName = Path.GetFileNameWithoutExtension(path);
-            string fileExt = Path.GetExtension(path);
-            return MakeFileNameUnique(Path.Combine(destinationFolder, fileName, fileExt));
-        }
-
-        private void CreateFolderIfNonExistent(FileInfo dir)
-        {
-            if (!Directory.Exists(dir.DirectoryName))
-            {
-                Directory.CreateDirectory(dir.DirectoryName);
-            }
-        }
-
-        public FileInfo MakeFileNameUnique(string path)
-        {
-            string dir = Path.GetDirectoryName(path);
-            string fileName = Path.GetFileNameWithoutExtension(path);
-            string fileExt = Path.GetExtension(path);
-
-            for (int i = 1; ; ++i)
-            {
-                if (!File.Exists(path))
-                    return new FileInfo(path);
-
-                path = Path.Combine(dir, fileName + " " + i + fileExt);
+                Directory.CreateDirectory(dir);
             }
         }
     }
@@ -100,6 +84,7 @@ namespace DesktopMaid
     public class FileMoveResult : EventArgs
     {
         public string path;
+        public int fileSizeInPercents;
         public Exception exception;
     }
 }
