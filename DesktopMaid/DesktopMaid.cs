@@ -26,7 +26,7 @@ namespace DesktopMaid
 
         private void BlinkControl(Control control)
         {
-            control.BackColor=Color.Red;
+            control.BackColor = Color.Red;
             Update();
             Thread.Sleep(100);
             control.ResetBackColor();
@@ -34,11 +34,11 @@ namespace DesktopMaid
 
         private void UpdateLbItems()
         {
-            currentDesktop=new Desktop();
+            currentDesktop = new Desktop();
             lbItems.BeginUpdate();
             lbItems.Clear();
             lbItems.SmallImageList = FileListViewManager.GetIcons(currentDesktop.Files.Where(File.Exists));
-            lbItems.FillWithDeskopItems(currentDesktop,savedDesktop);
+            lbItems.FillWithDeskopItems(currentDesktop, savedDesktop);
             lbItems.EndUpdate();
         }
 
@@ -49,7 +49,7 @@ namespace DesktopMaid
 
         private void butPreserve_Click(object sender, EventArgs e)
         {
-            savedDesktop.AddFiles(lbItems.SelectedItems.Cast<ListViewItem>().Select(t=>t.Tag.ToString()));
+            savedDesktop.AddFiles(lbItems.SelectedItems.Cast<ListViewItem>().Select(t => t.Tag.ToString()));
             UpdateLbItems();
         }
 
@@ -62,22 +62,25 @@ namespace DesktopMaid
         private void DesktopMaid_Shown(object sender, EventArgs e)
         {
             savedDesktop = Desktop.Load();
-            settings=Settings.Load();
+            settings = Settings.Load();
 
             if (savedDesktop == null)
             {
-                savedDesktop = new Desktop(new string[] { });
+                savedDesktop = new Desktop(new string[] {});
                 MessageBox.Show("Now you have to add files that you want to preserve on your desktop.");
                 tabControl1.SelectedIndex = 0;
                 BlinkControl(butPreserve);
             }
-            if (settings!=null)
+            if (settings != null)
             {
-                LoadDataFromSettings();
+                tbPath.Text = settings.Path;
+                cbRunAtStartup.Checked = settings.RunAtStartup;
+                chbAutoRestore.Checked = settings.AutoRestore;
+                numInterval.Value = settings.Interval;
             }
             else
             {
-                settings=new Settings();
+                settings = new Settings();
             }
             if (string.IsNullOrWhiteSpace(tbPath.Text))
             {
@@ -88,18 +91,10 @@ namespace DesktopMaid
             UpdateLbItems();
         }
 
-        private void LoadDataFromSettings()
-        {
-            tbPath.Text = settings.Path;
-            cbRunAtStartup.Checked = settings.RunAtStartup;
-            chbAutoRestore.Checked = settings.AutoRestore;
-            numInterval.Value = settings.Interval;
-        }
-
         private void butBrowse_Click(object sender, EventArgs e)
         {
-            var fbd=new FolderBrowserDialog();
-            if (fbd.ShowDialog()==DialogResult.OK)
+            var fbd = new FolderBrowserDialog();
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
                 settings.Path = fbd.SelectedPath;
                 tbPath.Text = settings.Path;
@@ -113,10 +108,11 @@ namespace DesktopMaid
             {
                 BackColor = result.exception == null ? Color.Green : Color.Red,
                 Text = $"{Path.GetFileName(result.path)}: {status}",
-                ToolTipText = result.exception == null ? result.path : TryToGetUserFriendlyExceptionDescription(result.exception)
+                ToolTipText =
+                    result.exception == null ? result.path : TryToGetUserFriendlyExceptionDescription(result.exception)
             };
             lVLog.Items.Add(line);
-            progressBar1.Value += result.fileSizeInPercents;
+            progressBar.Value += result.fileSizeInPercents;
         }
 
         private string TryToGetUserFriendlyExceptionDescription(Exception exception)
@@ -138,7 +134,11 @@ namespace DesktopMaid
         private void chbAutoRestore_CheckedChanged(object sender, EventArgs e)
         {
             settings.AutoRestore = chbAutoRestore.Checked;
-            progressBar1.Value++;
+            autoRestoreTimer.Interval = (int)(settings.Interval * 60 * 1000);
+            if (settings.AutoRestore)
+                autoRestoreTimer.Start();
+            else
+                autoRestoreTimer.Stop();
         }
 
         private void numInterval_ValueChanged(object sender, EventArgs e)
@@ -153,7 +153,8 @@ namespace DesktopMaid
 
         private void RestoreDesktop()
         {
-            progressBar1.Value = 0;
+            lVLog.Clear();
+            progressBar.Value = 0;
             try
             {
                 savedDesktop.Restore(settings.Path);
@@ -163,6 +164,11 @@ namespace DesktopMaid
                 MessageBox.Show($"Access denied!/n/n{ex.Message}");
             }
             UpdateLbItems();
+        }
+
+        private void autoRestoreTimer_Tick(object sender, EventArgs e)
+        {
+            RestoreDesktop();
         }
     }
 }

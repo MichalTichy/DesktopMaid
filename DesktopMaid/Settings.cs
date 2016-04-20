@@ -1,8 +1,10 @@
 ﻿using System;
 using System.CodeDom;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace DesktopMaid
 {
@@ -31,6 +33,15 @@ namespace DesktopMaid
             set
             {
                 _runAtStartup = value;
+                RegistryKey registryKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+                if (value)
+                {
+                    registryKey.SetValue("DesktopMaid", Application.ExecutablePath);
+                }
+                else if (registryKey.GetValueNames().Contains("DesktopMaid"))
+                {
+                    registryKey.DeleteValue("DesktopMaid");
+                }
                 Save();
             }
         }
