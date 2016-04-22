@@ -15,6 +15,7 @@ namespace DesktopMaid
         private string _path;
 
         private bool _runAtStartup;
+        private bool _startMinimalized;
         public static readonly string SettingsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/DesktopMaid/settings.json";
 
         public string Path
@@ -64,6 +65,16 @@ namespace DesktopMaid
             set
             {
                 _interval = value;
+                Save();
+            }
+        }
+
+        public bool StartMinimalized
+        {
+            get { return _startMinimalized; }
+            set
+            {
+                _startMinimalized = value;
                 Save();
             }
         }

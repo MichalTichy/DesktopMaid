@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DesktopMaid));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabRestore = new System.Windows.Forms.TabPage();
             this.lVLog = new System.Windows.Forms.ListView();
@@ -45,6 +46,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabSettings = new System.Windows.Forms.TabPage();
+            this.chbStartMinimalized = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.numInterval = new System.Windows.Forms.NumericUpDown();
@@ -53,6 +55,7 @@
             this.butBrowse = new System.Windows.Forms.Button();
             this.tbPath = new System.Windows.Forms.TextBox();
             this.autoRestoreTimer = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1.SuspendLayout();
             this.tabRestore.SuspendLayout();
             this.tabSettings.SuspendLayout();
@@ -64,7 +67,7 @@
             this.tabControl1.Controls.Add(this.tabRestore);
             this.tabControl1.Controls.Add(this.tabSettings);
             this.tabControl1.Location = new System.Drawing.Point(0, 1);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(707, 430);
@@ -86,9 +89,9 @@
             this.tabRestore.Controls.Add(this.label2);
             this.tabRestore.Controls.Add(this.label1);
             this.tabRestore.Location = new System.Drawing.Point(4, 25);
-            this.tabRestore.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabRestore.Margin = new System.Windows.Forms.Padding(4);
             this.tabRestore.Name = "tabRestore";
-            this.tabRestore.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabRestore.Padding = new System.Windows.Forms.Padding(4);
             this.tabRestore.Size = new System.Drawing.Size(699, 401);
             this.tabRestore.TabIndex = 0;
             this.tabRestore.Text = "Restore desktop layout";
@@ -97,7 +100,7 @@
             // lVLog
             // 
             this.lVLog.Location = new System.Drawing.Point(351, 186);
-            this.lVLog.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lVLog.Margin = new System.Windows.Forms.Padding(4);
             this.lVLog.Name = "lVLog";
             this.lVLog.Size = new System.Drawing.Size(333, 146);
             this.lVLog.TabIndex = 14;
@@ -116,7 +119,7 @@
             // lbItems
             // 
             this.lbItems.Location = new System.Drawing.Point(16, 27);
-            this.lbItems.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lbItems.Margin = new System.Windows.Forms.Padding(4);
             this.lbItems.Name = "lbItems";
             this.lbItems.ShowItemToolTips = true;
             this.lbItems.Size = new System.Drawing.Size(321, 340);
@@ -160,7 +163,7 @@
             // 
             this.butCancel.Enabled = false;
             this.butCancel.Location = new System.Drawing.Point(623, 340);
-            this.butCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.butCancel.Margin = new System.Windows.Forms.Padding(4);
             this.butCancel.Name = "butCancel";
             this.butCancel.Size = new System.Drawing.Size(63, 28);
             this.butCancel.TabIndex = 7;
@@ -170,7 +173,7 @@
             // progressBar
             // 
             this.progressBar.Location = new System.Drawing.Point(348, 340);
-            this.progressBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.progressBar.Margin = new System.Windows.Forms.Padding(4);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(267, 28);
             this.progressBar.TabIndex = 6;
@@ -178,7 +181,7 @@
             // butRemove
             // 
             this.butRemove.Location = new System.Drawing.Point(348, 134);
-            this.butRemove.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.butRemove.Margin = new System.Windows.Forms.Padding(4);
             this.butRemove.Name = "butRemove";
             this.butRemove.Size = new System.Drawing.Size(337, 28);
             this.butRemove.TabIndex = 5;
@@ -189,7 +192,7 @@
             // butPreserve
             // 
             this.butPreserve.Location = new System.Drawing.Point(348, 98);
-            this.butPreserve.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.butPreserve.Margin = new System.Windows.Forms.Padding(4);
             this.butPreserve.Name = "butPreserve";
             this.butPreserve.Size = new System.Drawing.Size(337, 28);
             this.butPreserve.TabIndex = 4;
@@ -200,7 +203,7 @@
             // butClean
             // 
             this.butClean.Location = new System.Drawing.Point(351, 27);
-            this.butClean.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.butClean.Margin = new System.Windows.Forms.Padding(4);
             this.butClean.Name = "butClean";
             this.butClean.Size = new System.Drawing.Size(337, 52);
             this.butClean.TabIndex = 3;
@@ -232,6 +235,7 @@
             // 
             // tabSettings
             // 
+            this.tabSettings.Controls.Add(this.chbStartMinimalized);
             this.tabSettings.Controls.Add(this.label4);
             this.tabSettings.Controls.Add(this.label3);
             this.tabSettings.Controls.Add(this.numInterval);
@@ -240,13 +244,24 @@
             this.tabSettings.Controls.Add(this.butBrowse);
             this.tabSettings.Controls.Add(this.tbPath);
             this.tabSettings.Location = new System.Drawing.Point(4, 25);
-            this.tabSettings.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabSettings.Padding = new System.Windows.Forms.Padding(4);
             this.tabSettings.Size = new System.Drawing.Size(699, 401);
             this.tabSettings.TabIndex = 2;
             this.tabSettings.Text = "Settings";
             this.tabSettings.UseVisualStyleBackColor = true;
+            // 
+            // chbStartMinimalized
+            // 
+            this.chbStartMinimalized.AutoSize = true;
+            this.chbStartMinimalized.Location = new System.Drawing.Point(12, 140);
+            this.chbStartMinimalized.Name = "chbStartMinimalized";
+            this.chbStartMinimalized.Size = new System.Drawing.Size(135, 21);
+            this.chbStartMinimalized.TabIndex = 7;
+            this.chbStartMinimalized.Text = "start minimalized";
+            this.chbStartMinimalized.UseVisualStyleBackColor = true;
+            this.chbStartMinimalized.CheckedChanged += new System.EventHandler(this.chbStartMinimalized_CheckedChanged);
             // 
             // label4
             // 
@@ -271,7 +286,7 @@
             // numInterval
             // 
             this.numInterval.Location = new System.Drawing.Point(475, 111);
-            this.numInterval.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numInterval.Margin = new System.Windows.Forms.Padding(4);
             this.numInterval.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -286,7 +301,7 @@
             // 
             this.chbAutoRestore.AutoSize = true;
             this.chbAutoRestore.Location = new System.Drawing.Point(12, 112);
-            this.chbAutoRestore.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chbAutoRestore.Margin = new System.Windows.Forms.Padding(4);
             this.chbAutoRestore.Name = "chbAutoRestore";
             this.chbAutoRestore.Size = new System.Drawing.Size(212, 21);
             this.chbAutoRestore.TabIndex = 3;
@@ -298,7 +313,7 @@
             // 
             this.cbRunAtStartup.AutoSize = true;
             this.cbRunAtStartup.Location = new System.Drawing.Point(12, 84);
-            this.cbRunAtStartup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbRunAtStartup.Margin = new System.Windows.Forms.Padding(4);
             this.cbRunAtStartup.Name = "cbRunAtStartup";
             this.cbRunAtStartup.Size = new System.Drawing.Size(115, 21);
             this.cbRunAtStartup.TabIndex = 2;
@@ -309,7 +324,7 @@
             // butBrowse
             // 
             this.butBrowse.Location = new System.Drawing.Point(621, 34);
-            this.butBrowse.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.butBrowse.Margin = new System.Windows.Forms.Padding(4);
             this.butBrowse.Name = "butBrowse";
             this.butBrowse.Size = new System.Drawing.Size(67, 25);
             this.butBrowse.TabIndex = 1;
@@ -320,7 +335,7 @@
             // tbPath
             // 
             this.tbPath.Location = new System.Drawing.Point(12, 34);
-            this.tbPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbPath.Margin = new System.Windows.Forms.Padding(4);
             this.tbPath.Name = "tbPath";
             this.tbPath.ReadOnly = true;
             this.tbPath.Size = new System.Drawing.Size(596, 22);
@@ -330,6 +345,13 @@
             // 
             this.autoRestoreTimer.Tick += new System.EventHandler(this.autoRestoreTimer_Tick);
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.BalloonTipText = "TEST";
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "Desktop maid";
+            this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+            // 
             // DesktopMaid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -337,11 +359,12 @@
             this.ClientSize = new System.Drawing.Size(707, 431);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "DesktopMaid";
             this.Text = "Desktop Maid";
             this.Shown += new System.EventHandler(this.DesktopMaid_Shown);
+            this.Resize += new System.EventHandler(this.DesktopMaid_Resize);
             this.tabControl1.ResumeLayout(false);
             this.tabRestore.ResumeLayout(false);
             this.tabRestore.PerformLayout();
@@ -378,6 +401,8 @@
         private System.Windows.Forms.Label labelInfo;
         private System.Windows.Forms.ListView lVLog;
         private System.Windows.Forms.Timer autoRestoreTimer;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.CheckBox chbStartMinimalized;
     }
 }
 

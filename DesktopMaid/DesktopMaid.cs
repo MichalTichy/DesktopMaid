@@ -77,6 +77,10 @@ namespace DesktopMaid
                 cbRunAtStartup.Checked = settings.RunAtStartup;
                 chbAutoRestore.Checked = settings.AutoRestore;
                 numInterval.Value = settings.Interval;
+                if (settings.StartMinimalized)
+                {
+                    ChangeWindowState(FormWindowState.Minimized);
+                }
             }
             else
             {
@@ -169,6 +173,39 @@ namespace DesktopMaid
         private void autoRestoreTimer_Tick(object sender, EventArgs e)
         {
             RestoreDesktop();
+        }
+
+        private void chbStartMinimalized_CheckedChanged(object sender, EventArgs e)
+        {
+            settings.StartMinimalized = cbRunAtStartup.Checked;
+        }
+
+        public void ChangeWindowState(FormWindowState windowState)
+        {
+            switch (windowState)
+            {
+                case FormWindowState.Minimized:
+                    notifyIcon.Visible = true;
+                    ShowInTaskbar = false;
+                    this.Hide();
+                    break;
+                case FormWindowState.Normal:
+                    notifyIcon.Visible = false;
+                    ShowInTaskbar = true;
+                    this.Show();
+                    //todo bring to front
+                    break;
+            }
+        }
+
+        private void DesktopMaid_Resize(object sender, EventArgs e)
+        {
+            ChangeWindowState(WindowState);
+        }
+
+        private void notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            ChangeWindowState(FormWindowState.Normal);
         }
     }
 }
