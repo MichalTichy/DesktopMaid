@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DesktopMaid
@@ -206,6 +201,16 @@ namespace DesktopMaid
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
             ChangeWindowState(FormWindowState.Normal);
+        }
+
+        private void trayRestoreNow_Click(object sender, EventArgs e)
+        {
+            RestoreDesktop();
+        }
+
+        private void eXITToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

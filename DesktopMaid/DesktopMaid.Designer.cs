@@ -56,10 +56,14 @@
             this.tbPath = new System.Windows.Forms.TextBox();
             this.autoRestoreTimer = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.trayContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.trayRestoreNow = new System.Windows.Forms.ToolStripMenuItem();
+            this.eXITToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabRestore.SuspendLayout();
             this.tabSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numInterval)).BeginInit();
+            this.trayContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -347,10 +351,34 @@
             // 
             // notifyIcon
             // 
-            this.notifyIcon.BalloonTipText = "TEST";
+            this.notifyIcon.ContextMenuStrip = this.trayContextMenu;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "Desktop maid";
             this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+            // 
+            // trayContextMenu
+            // 
+            this.trayContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.trayContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.trayRestoreNow,
+            this.eXITToolStripMenuItem});
+            this.trayContextMenu.Name = "trayContextMenu";
+            this.trayContextMenu.ShowImageMargin = false;
+            this.trayContextMenu.Size = new System.Drawing.Size(161, 56);
+            // 
+            // trayRestoreNow
+            // 
+            this.trayRestoreNow.Name = "trayRestoreNow";
+            this.trayRestoreNow.Size = new System.Drawing.Size(160, 26);
+            this.trayRestoreNow.Text = "Restore desktop";
+            this.trayRestoreNow.Click += new System.EventHandler(this.trayRestoreNow_Click);
+            // 
+            // eXITToolStripMenuItem
+            // 
+            this.eXITToolStripMenuItem.Name = "eXITToolStripMenuItem";
+            this.eXITToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
+            this.eXITToolStripMenuItem.Text = "EXIT";
+            this.eXITToolStripMenuItem.Click += new System.EventHandler(this.eXITToolStripMenuItem_Click);
             // 
             // DesktopMaid
             // 
@@ -371,6 +399,7 @@
             this.tabSettings.ResumeLayout(false);
             this.tabSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numInterval)).EndInit();
+            this.trayContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -403,6 +432,9 @@
         private System.Windows.Forms.Timer autoRestoreTimer;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.CheckBox chbStartMinimalized;
+        private System.Windows.Forms.ContextMenuStrip trayContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem trayRestoreNow;
+        private System.Windows.Forms.ToolStripMenuItem eXITToolStripMenuItem;
     }
 }
 
