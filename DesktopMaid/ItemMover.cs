@@ -20,11 +20,11 @@ namespace DesktopMaid
         public FileMoveResult Start()
         {
 
-            var result = new FileMoveResult { path = itemPath };
+            var result = new FileMoveResult { SourcePath= itemPath };
             try
             {
                 var target = GetTargetPath(itemPath, destinationFolder);
-
+                result.TargetPath = target;
                 if (Directory.Exists(itemPath)) //if is directory
                 {
                     string uniqueTargetName = MakeFileNameUnique(target);

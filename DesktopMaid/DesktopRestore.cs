@@ -25,7 +25,7 @@ namespace DesktopMaid
                 var firstFinishedTask = await Task.WhenAny(tasks);
                 tasks.Remove(firstFinishedTask);
                 var result = await firstFinishedTask;
-                result.fileSizeInPercents = sizesOfItemsInPercents[result.path];
+                result.fileSizeInPercents = sizesOfItemsInPercents[result.SourcePath];
                 OnResultReady(result);
             }
         }
@@ -82,8 +82,9 @@ namespace DesktopMaid
 
     public class FileMoveResult : EventArgs
     {
-        public string path;
+        public string SourcePath;
         public int fileSizeInPercents;
         public Exception exception;
+        public string TargetPath { get; set; }
     }
 }

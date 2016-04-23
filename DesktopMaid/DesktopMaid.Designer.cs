@@ -105,11 +105,13 @@
             // 
             this.lVLog.Location = new System.Drawing.Point(351, 186);
             this.lVLog.Margin = new System.Windows.Forms.Padding(4);
+            this.lVLog.MultiSelect = false;
             this.lVLog.Name = "lVLog";
             this.lVLog.Size = new System.Drawing.Size(333, 146);
             this.lVLog.TabIndex = 14;
             this.lVLog.UseCompatibleStateImageBehavior = false;
             this.lVLog.View = System.Windows.Forms.View.List;
+            this.lVLog.DoubleClick += new System.EventHandler(this.lVLog_DoubleClick);
             // 
             // labelInfo
             // 

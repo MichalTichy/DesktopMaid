@@ -106,9 +106,9 @@ namespace DesktopMaid
             var line = new ListViewItem
             {
                 BackColor = result.exception == null ? Color.Green : Color.Red,
-                Text = $"{Path.GetFileName(result.path)}: {status}",
+                Text = $"{Path.GetFileName(result.SourcePath)}: {status}",
                 ToolTipText =
-                    result.exception == null ? result.path : TryToGetUserFriendlyExceptionDescription(result.exception)
+                    result.exception == null ? result.TargetPath : TryToGetUserFriendlyExceptionDescription(result.exception)
             };
             lVLog.Items.Add(line);
             progressBar.Value += result.fileSizeInPercents;
@@ -116,13 +116,27 @@ namespace DesktopMaid
 
         private string TryToGetUserFriendlyExceptionDescription(Exception exception)
         {
+            string message="";
+
             if (exception is UnauthorizedAccessException)
-                return "You dont have the required permission to create or delete this file!";
-
-            if (exception is FileNotFoundException)
-                return "Source file was not found!";
-
-            return exception.Message;
+            {
+                message = "You dont have the required permission to create or delete this file!";
+#if DEBUG
+                message += $"\n{exception.Message}";
+#endif
+            }
+            else if (exception is FileNotFoundException)
+            {
+                message = "Source file was not found!";
+#if DEBUG
+                message += $"\n{exception.Message}";
+#endif
+            }
+            else
+            {
+                message = exception.Message;
+            }
+            return message;
         }
 
         private void cbRunAtStartup_CheckedChanged(object sender, EventArgs e)
@@ -211,6 +225,14 @@ namespace DesktopMaid
         private void eXITToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void lVLog_DoubleClick(object sender, EventArgs e)
+        {
+            if (lVLog.SelectedItems.Count!=0)
+            {
+                MessageBox.Show(lVLog.SelectedItems[0].ToolTipText);
+            }
         }
     }
 }
