@@ -56,30 +56,12 @@ namespace DesktopMaid
 
         private void DesktopMaid_Shown(object sender, EventArgs e)
         {
-            savedDesktop = Desktop.Load();
-            settings = Settings.Load();
-
             if (savedDesktop == null)
             {
                 savedDesktop = new Desktop(new string[] {});
                 MessageBox.Show("Now you have to add files that you want to preserve on your desktop.");
                 tabControl1.SelectedIndex = 0;
                 BlinkControl(butPreserve);
-            }
-            if (settings != null)
-            {
-                tbPath.Text = settings.Path;
-                cbRunAtStartup.Checked = settings.RunAtStartup;
-                chbAutoRestore.Checked = settings.AutoRestore;
-                numInterval.Value = settings.Interval;
-                if (settings.StartMinimalized)
-                {
-                    ChangeWindowState(FormWindowState.Minimized);
-                }
-            }
-            else
-            {
-                settings = new Settings();
             }
             if (string.IsNullOrWhiteSpace(tbPath.Text))
             {
@@ -186,7 +168,7 @@ namespace DesktopMaid
 
         private void chbStartMinimalized_CheckedChanged(object sender, EventArgs e)
         {
-            settings.StartMinimalized = cbRunAtStartup.Checked;
+            settings.StartMinimalized =chbStartMinimalized.Checked;
         }
 
         public void ChangeWindowState(FormWindowState windowState)
@@ -233,6 +215,29 @@ namespace DesktopMaid
             {
                 MessageBox.Show(lVLog.SelectedItems[0].ToolTipText);
             }
+        }
+
+        private void DesktopMaid_Load(object sender, EventArgs e)
+        {
+            savedDesktop = Desktop.Load();
+            settings = Settings.Load();
+
+            if (settings != null)
+            {
+                tbPath.Text = settings.Path;
+                cbRunAtStartup.Checked = settings.RunAtStartup;
+                chbAutoRestore.Checked = settings.AutoRestore;
+                numInterval.Value = settings.Interval;
+                if (settings.StartMinimalized)
+                {
+                    ChangeWindowState(FormWindowState.Minimized);
+                }
+            }
+            else
+            {
+                settings = new Settings();
+            }
+
         }
     }
 }

@@ -33,7 +33,7 @@ namespace DesktopMaid
                     {
                         MoveDirectory(itemPath, uniqueTargetName);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         MoveDirectory(uniqueTargetName,itemPath,false);
                         throw;
@@ -75,7 +75,7 @@ namespace DesktopMaid
             {
                 if (File.Exists(path))
                 {
-                    collection.Add(new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.Inheritable));
+                    collection.Add(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None));
                 }
                 else if (Directory.Exists(path))
                 {
@@ -90,7 +90,7 @@ namespace DesktopMaid
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ReleaseLocks(sourceLocks);
                 throw;

@@ -389,10 +389,12 @@
             this.ClientSize = new System.Drawing.Size(707, 431);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "DesktopMaid";
             this.Text = "Desktop Maid";
+            this.Load += new System.EventHandler(this.DesktopMaid_Load);
             this.Shown += new System.EventHandler(this.DesktopMaid_Shown);
             this.Resize += new System.EventHandler(this.DesktopMaid_Resize);
             this.tabControl1.ResumeLayout(false);
