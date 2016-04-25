@@ -28,6 +28,9 @@ namespace DesktopMaid
                 result.fileSizeInPercents = sizesOfItemsInPercents[result.SourcePath];
                 OnResultReady(result);
             }
+
+            Task.WaitAll(tasks.ToArray());
+            OnResultReady(null);
         }
 
         private Dictionary<string, int> GetSizesOfItemsInPercents(IEnumerable<string> filesToMove)

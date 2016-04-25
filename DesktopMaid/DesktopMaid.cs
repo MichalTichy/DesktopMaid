@@ -84,6 +84,13 @@ namespace DesktopMaid
 
         private void ResultReady(object sender, FileMoveResult result)
         {
+            if (result==null)
+            {
+                progressBar.Value = 100;
+                UpdateLbItems();
+                return;
+            }
+
             var status = result.exception == null ? "OK" : "Error";
             var line = new ListViewItem
             {
@@ -207,7 +214,7 @@ namespace DesktopMaid
             RestoreDesktop();
         }
 
-        private void eXITToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
