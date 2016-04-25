@@ -181,17 +181,20 @@ namespace DesktopMaid
                     this.Hide();
                     break;
                 case FormWindowState.Normal:
+                    WindowState = FormWindowState.Normal;
                     notifyIcon.Visible = false;
                     ShowInTaskbar = true;
                     this.Show();
-                    //todo bring to front
                     break;
             }
         }
 
         private void DesktopMaid_Resize(object sender, EventArgs e)
         {
-            ChangeWindowState(WindowState);
+            if (WindowState==FormWindowState.Minimized)
+            {
+                ChangeWindowState(WindowState);
+            }
         }
 
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
