@@ -86,8 +86,7 @@ namespace DesktopMaid
         {
             if (result==null)
             {
-                progressBar.Value = 100;
-                UpdateLbItems();
+                RunAfterTestsRoutines();
                 return;
             }
 
@@ -101,6 +100,13 @@ namespace DesktopMaid
             };
             lVLog.Items.Add(line);
             progressBar.Value += result.fileSizeInPercents;
+        }
+
+        private void RunAfterTestsRoutines()
+        {
+            progressBar.Value = 100;
+            UpdateLbItems();
+            ChangeRestoreTriggersState(enabled: true);
         }
 
         private string TryToGetUserFriendlyExceptionDescription(Exception exception)
@@ -155,6 +161,7 @@ namespace DesktopMaid
 
         private void RestoreDesktop()
         {
+            ChangeRestoreTriggersState(enabled:false);
             lVLog.Clear();
             progressBar.Value = 0;
             try
@@ -166,6 +173,19 @@ namespace DesktopMaid
                 MessageBox.Show($"Access denied!/n/n{ex.Message}");
             }
             UpdateLbItems();
+        }
+
+        private void ChangeRestoreTriggersState(bool enabled)
+        {
+            butClean.Enabled = enabled;
+            if (enabled && settings.AutoRestore)
+            {
+                autoRestoreTimer.Start();
+            }
+            else
+            {
+                autoRestoreTimer.Stop();
+            }
         }
 
         private void autoRestoreTimer_Tick(object sender, EventArgs e)
