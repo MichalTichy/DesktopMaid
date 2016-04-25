@@ -38,7 +38,6 @@
             this.linkRefresh = new System.Windows.Forms.LinkLabel();
             this.label5 = new System.Windows.Forms.Label();
             this.Log = new System.Windows.Forms.Label();
-            this.butCancel = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.butRemove = new System.Windows.Forms.Button();
             this.butPreserve = new System.Windows.Forms.Button();
@@ -85,7 +84,6 @@
             this.tabRestore.Controls.Add(this.linkRefresh);
             this.tabRestore.Controls.Add(this.label5);
             this.tabRestore.Controls.Add(this.Log);
-            this.tabRestore.Controls.Add(this.butCancel);
             this.tabRestore.Controls.Add(this.progressBar);
             this.tabRestore.Controls.Add(this.butRemove);
             this.tabRestore.Controls.Add(this.butPreserve);
@@ -165,23 +163,12 @@
             this.Log.TabIndex = 9;
             this.Log.Text = "Log";
             // 
-            // butCancel
-            // 
-            this.butCancel.Enabled = false;
-            this.butCancel.Location = new System.Drawing.Point(623, 340);
-            this.butCancel.Margin = new System.Windows.Forms.Padding(4);
-            this.butCancel.Name = "butCancel";
-            this.butCancel.Size = new System.Drawing.Size(63, 28);
-            this.butCancel.TabIndex = 7;
-            this.butCancel.Text = "cancel";
-            this.butCancel.UseVisualStyleBackColor = true;
-            // 
             // progressBar
             // 
             this.progressBar.Location = new System.Drawing.Point(348, 340);
             this.progressBar.Margin = new System.Windows.Forms.Padding(4);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(267, 28);
+            this.progressBar.Size = new System.Drawing.Size(336, 28);
             this.progressBar.TabIndex = 6;
             // 
             // butRemove
@@ -414,7 +401,6 @@
         private System.Windows.Forms.TabPage tabRestore;
         private System.Windows.Forms.TabPage tabSettings;
         private System.Windows.Forms.Label Log;
-        private System.Windows.Forms.Button butCancel;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button butRemove;
         private System.Windows.Forms.Button butPreserve;
