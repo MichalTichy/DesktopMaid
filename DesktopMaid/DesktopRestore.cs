@@ -13,7 +13,7 @@ namespace DesktopMaid
             var currentDesktop = new Desktop();
             var filesToMove = currentDesktop.Files.Except(Files);
             var sizesOfItemsInPercents = GetSizesOfItemsInPercents(filesToMove);
-            var destinationFolder = $"{destination}/{DateTime.Now.Date.ToShortDateString().Replace('/', '.')}";
+            var destinationFolder = $@"{destination}\{DateTime.Now.Date.ToShortDateString().Replace('/', '.')}";
             CreateFolderIfNonExistent(destinationFolder);
 
             var tasks =
