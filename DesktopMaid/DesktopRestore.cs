@@ -40,7 +40,9 @@ namespace DesktopMaid
             var totalSize = sizes.Values.Sum();
             foreach (var fileSize in sizes)
             {
-                var size= (100 * fileSize.Value) / totalSize;
+
+                var size = totalSize != 0 ?
+                    (100*fileSize.Value)/totalSize : 0;
                 sizesInPercents.Add(fileSize.Key,(int)size);
             }
             return sizesInPercents;
@@ -59,7 +61,7 @@ namespace DesktopMaid
                 {
                     Scripting.FileSystemObject fso = new Scripting.FileSystemObject();
                     Scripting.Folder folder = fso.GetFolder(path);
-                    sizes.Add(path, folder.Size);
+                    sizes.Add(path, (long)folder.Size);
                 }
             }
             return sizes;
