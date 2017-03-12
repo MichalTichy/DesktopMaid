@@ -11,7 +11,11 @@ namespace DesktopMaid
         public async void Restore(string destination)
         {
             var currentDesktop = new Desktop();
-            var filesToMove = currentDesktop.Files.Except(Files);
+            var filesToMove = currentDesktop.Files.Except(Files).ToArray();
+
+            if (!filesToMove.Any())
+                return;
+
             var sizesOfItemsInPercents = GetSizesOfItemsInPercents(filesToMove);
             var destinationFolder = $@"{destination}\{DateTime.Now.Date.ToShortDateString().Replace('/', '.')}";
             CreateFolderIfNonExistent(destinationFolder);
