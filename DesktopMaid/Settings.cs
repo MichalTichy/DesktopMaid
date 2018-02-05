@@ -10,7 +10,7 @@ namespace DesktopMaid
     public class Settings
     {
         private bool _autoRestore;
-        private decimal _interval;
+        private decimal _interval=60;
         private string _path;
 
         private bool _runAtStartup;

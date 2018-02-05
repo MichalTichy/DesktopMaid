@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -243,7 +244,7 @@ namespace DesktopMaid
         {
             if (lVLog.SelectedItems.Count!=0)
             {
-                MessageBox.Show(lVLog.SelectedItems[0].ToolTipText);
+                Process.Start("explorer.exe",Path.GetDirectoryName(lVLog.SelectedItems[0].ToolTipText) );
             }
         }
 
