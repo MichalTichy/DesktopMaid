@@ -34,7 +34,7 @@ namespace DesktopMaid
             lbItems.BeginUpdate();
             lbItems.Clear();
             lbItems.SmallImageList = FileListViewManager.GetIcons(currentDesktop.Files.Where(File.Exists));
-            lbItems.FillWithDeskopItems(currentDesktop, savedDesktop);
+            lbItems.FillWithDesktopItems(currentDesktop, savedDesktop);
             lbItems.EndUpdate();
         }
 
@@ -95,7 +95,7 @@ namespace DesktopMaid
             var line = new ListViewItem
             {
                 BackColor = result.exception == null ? Color.Green : Color.Red,
-                Text = $"{Path.GetFileName(result.SourcePath)}: {status}",
+                Text = $"{Path.GetFileName(result.SourcePath)}",
                 ToolTipText =
                     result.exception == null ? result.TargetPath : TryToGetUserFriendlyExceptionDescription(result.exception)
             };
@@ -242,9 +242,18 @@ namespace DesktopMaid
 
         private void lVLog_DoubleClick(object sender, EventArgs e)
         {
+            var text = lVLog.SelectedItems[0].ToolTipText;
             if (lVLog.SelectedItems.Count!=0)
             {
-                Process.Start("explorer.exe",Path.GetDirectoryName(lVLog.SelectedItems[0].ToolTipText) );
+                if (File.Exists(text))
+                {
+                    Process.Start("explorer.exe",Path.GetDirectoryName(text) );
+                }
+                else
+                {
+                    MessageBox.Show(text);
+
+                }
             }
         }
 

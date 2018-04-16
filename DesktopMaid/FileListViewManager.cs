@@ -8,7 +8,7 @@ namespace DesktopMaid
 {
     public static class FileListViewManager
     {
-        public static void FillWithDeskopItems(this ListView listView, Desktop currentDesktop,Desktop savedDesktop)
+        public static void FillWithDesktopItems(this ListView listView, Desktop currentDesktop,Desktop savedDesktop)
         {
             var colors = GetColors(currentDesktop,savedDesktop);
             for (int index = 0; index < currentDesktop.Files.Count; index++)
